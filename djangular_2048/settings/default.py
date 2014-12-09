@@ -117,8 +117,7 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
-    normpath(join(BASE_DIR, 'assets')),
-    normpath(join(BASE_DIR, 'static'))
+    join(BASE_DIR, 'static'),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
