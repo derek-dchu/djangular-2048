@@ -71,3 +71,8 @@ local_settings.py
 
 # PyCharm
 .idea
+
+#Heroku
+venv
+*.pyc
+staticfiles

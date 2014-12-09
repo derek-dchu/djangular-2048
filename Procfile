@@ -1,0 +1,1 @@
+web: gunicorn djangular-2048.wsgi --log-file -
