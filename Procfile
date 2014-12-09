@@ -1,1 +1,1 @@
-web: gunicorn djangular-2048.wsgi --log-file -
+web: gunicorn djangular_2048.wsgi --log-file -
