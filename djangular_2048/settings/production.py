@@ -17,7 +17,7 @@ SECRET_KEY = environ.get('SECRET_KEY')
 
 #### ALLOWED HOSTS CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 #### END ALLOWED HOST CONFIGURATION
 
 # Parse database configuration from $DATABASE_URL
