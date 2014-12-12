@@ -72,8 +72,12 @@ local_settings.py
 # PyCharm
 .idea
 
-#Heroku
+# Heroku
 venv
 *.pyc
 staticfiles
 bower_components
+
+# Angular APP
+angular-2048
+!angular-2048/app

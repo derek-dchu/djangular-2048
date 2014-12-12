@@ -1,0 +1,3 @@
+[submodule "djangular_2048/djangular_2048/static/angular-2048"]
+	path = djangular_2048/djangular_2048/static/angular-2048
+	url = https://github.com/derek-dchu/angular-2048
