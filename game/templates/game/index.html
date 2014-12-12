@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
+{% load account %}
 
 {% block cross-browser %}
 <!--[if lt IE 7]>      <html lang="en" ng-app="2048App" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -17,7 +18,24 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="container" ng-include src="'https://djangular-2048.herokuapp.com/static/angular-2048/app/views/main.html'"></div>
+
+    <div>
+        <strong>Menu:</strong>
+        <ul>
+        {% if user.is_authenticated %}
+            {% user_display user %}
+            <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+            <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+            {% else %}
+            <li><a href="{% url 'account_login' %}">Sign In</a></li>
+            <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        {% endif %}
+        </ul>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div class="container" ng-include=" 'mainId.html' "></div>
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}
