@@ -8,6 +8,6 @@ angular.module('Grid')
             scope: {
                 ngModel: '='
             },
-            templateUrl: 'static/angular-2048/app/scripts/grid/tile.html'
+            templateUrl: 'tileId.html'
         }
     });
