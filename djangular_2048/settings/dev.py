@@ -43,7 +43,10 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'SCOPE': ['email', 'publish_stream'],
-        'METHOD': 'oauth2'  # instead of 'js_sdk'
+        'METHOD': 'oauth2',  # instead of 'js_sdk'
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v2.2'
     }
 }
 
