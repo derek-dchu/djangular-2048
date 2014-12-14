@@ -25,6 +25,12 @@ AUTHENTICATION_BACKENDS = (
 )
 
 
+#### Python-Social-Auth Settings
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
+
+LOGIN_REDIRECT_URL = '/'
+
+
 try:
     from .local_settings import *
 except ImportError:
