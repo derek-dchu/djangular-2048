@@ -5,14 +5,21 @@ from .default import *
 DEBUG = True
 
 INSTALLED_APPS = DEFAULT_APPS + (
+    'account',
+
     'social.apps.django_app.default',
 
     'game',
 )
 
-MIDDLEWARE_CLASSES = DEFAULT_MIDDLEWARE_CLASSES + ()
+MIDDLEWARE_CLASSES = DEFAULT_MIDDLEWARE_CLASSES + (
+    'account.middleware.LocaleMiddleware',
+    'account.middleware.TimezoneMiddleware',
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
+    'account.context_processors.account',
+
     'social.apps.django_app.context_processors.backends',
    'social.apps.django_app.context_processors.login_redirect',
 )
