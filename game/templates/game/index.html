@@ -1,13 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
-{% block cross-browser %}
-<!--[if lt IE 7]>      <html lang="en" ng-app="2048App" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="2048App"" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="2048App" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="2048App" class="no-js"> <!--<![endif]-->
-{% endblock %}
-
 {% block stylesheets %}
 <link rel="stylesheet" href="{% static 'angular-2048/app/styles/main.css' %}">
 {% endblock %}
@@ -17,7 +10,19 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div class="container" ng-include src="'https://djangular-2048.herokuapp.com/static/angular-2048/app/views/main.html'"></div>
+    <div class="content-wrapper">
+        <div class="user">
+            <p>
+                {% if user and not user.is_anonymous %}
+                    Hello {{ user.get_full_name|default:user.username }}!
+                {% else %}
+                Please login to play.
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="game" ng-include="'mainId.html'"></div>
+     </div>
 {% endblock %}
 
 {% block scripts %}
