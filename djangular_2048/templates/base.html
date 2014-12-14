@@ -4,18 +4,28 @@
 <!DOCTYPE html>
 
 {% block cross-browser %}
+<!--[if lt IE 7]>      <html lang="en" ng-app="2048App" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="2048App"" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="2048App" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="2048App" class="no-js"> <!--<![endif]-->
 {% endblock %}
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
 
-    {% block title %}
-    <title>djangular-2048</title>
-    {% endblock %}
+    <title>{% block head-title %}djangular-2048{% endblock %}</title>
 
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+   <!--[if lt IE 9]>
+     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+   <![endif]-->
+
     {% block stylesheets %}
     {% endblock %}
 </head>
@@ -29,7 +39,11 @@
     {% block footer %}
     {% endblock %}
 
+    <!-- Load scripts here -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
     {% block scripts %}
     {% endblock %}
+    <!-- End of loading scripts -->
 </body>
 </html>
