@@ -7,7 +7,7 @@
 {% block content %}
   <div class="row">
     <div class="col-md-5">
-      <form method="POST" action="{% url "accounts:account_logout" %}">
+      <form method="POST" action="{% url "account:account_logout" %}">
         <legend>{% trans "Log out" %}</legend>
         <fieldset>
             {% csrf_token %}
