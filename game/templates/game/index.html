@@ -11,7 +11,6 @@
 <![endif]-->
 
 <div class="content-wrapper">
-  {% if user and not user.is_anonymous %}
   <div class="user">
     <p>
       <ul>
@@ -19,14 +18,13 @@
             <a>Hello {{ user.get_full_name|default:user.username }}!</a>
         </li>
         <li>
-            <a href="{% url 'accounts:account_logout' %}?next={{ request.path }}">Logout</a>
+            <a href="{% url 'account:account_logout' %}?next={{ request.path }}">Logout</a>
         </li>
       </ul>
     </p>
   </div>
 
   <div class="game" ng-include="'mainId.html'"></div>
-  {% endif %}
 </div>
 {% endblock %}
 
