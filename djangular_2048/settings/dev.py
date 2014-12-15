@@ -5,9 +5,10 @@ from .default import *
 DEBUG = True
 
 INSTALLED_APPS = DEFAULT_APPS + (
-    'account',
 
+    'account',
     'social.apps.django_app.default',
+    'bootstrap3',
 
     'game',
 )
@@ -26,6 +27,9 @@ TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+
+    'account.auth_backends.EmailAuthenticationBackend',
+
     'social.backends.facebook.FacebookOAuth2',
     'social.backends.google.GoogleOAuth2',
     'social.backends.twitter.TwitterOAuth',
@@ -36,6 +40,11 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
 LOGIN_REDIRECT_URL = '/'
+
+
+#### Python-User-Accounts settings
+ACCOUNT_EMAIL_UNIQUE = True
+ACCOUNT_EMAIL_CONFIRMATION_REQUIRED = True
 
 
 try:
