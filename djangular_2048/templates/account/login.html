@@ -18,6 +18,20 @@
         <a href="{% url "accounts:account_password_reset" %}" class="btn btn-default">{% trans "Forgot your password?" %}</a>
         <button type="submit" class="btn btn-primary">{% trans "Log in" %}</button>
       </form>
+
+      <div class="social-port">
+        <ul>
+          <li>
+              <a href="{% url 'social:begin' 'facebook' %}?next={% url 'game:index' %}">Login with Facebook</a>
+          </li>
+          <li>
+              <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'game:index' %}">Login with Google</a>
+          </li>
+          <li>
+              <a href="{% url 'social:begin' 'twitter' %}?next={% url 'game:index' %}">Login with Twitter</a>
+          </li>
+        </ul>
+      </div>
     </div>
     <div class="col-md-4">
        {% include "account/_login_sidebar.html" %}
