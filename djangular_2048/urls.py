@@ -6,5 +6,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^auth/', include('django.contrib.auth.urls', namespace='auth')),
     url(r'^social/', include('social.apps.django_app.urls', namespace='social', app_name='python-social-auth')),
-    url(r'^', include('account.urls', namespace='accounts', app_name='python-user-accounts')),
+    url(r'^', include('account.urls', namespace='account', app_name='python-user-accounts')),
 )
