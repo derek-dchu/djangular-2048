@@ -19,13 +19,14 @@ INSTALLED_APPS = DEFAULT_APPS + (
 MIDDLEWARE_CLASSES = DEFAULT_MIDDLEWARE_CLASSES + (
     'account.middleware.LocaleMiddleware',
     'account.middleware.TimezoneMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = TEMPLATE_CONTEXT_PROCESSORS + (
     'account.context_processors.account',
 
     'social.apps.django_app.context_processors.backends',
-   'social.apps.django_app.context_processors.login_redirect',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -59,6 +60,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
 
 LOGIN_REDIRECT_URL = '/'
+SOCIAL_AUTH_LOGIN_ERROR_URL = '/'
 
 # Facebook
 SOCIAL_AUTH_FACEBOOK_KEY = environ.get('SOCIAL_AUTH_FACEBOOK_KEY')
