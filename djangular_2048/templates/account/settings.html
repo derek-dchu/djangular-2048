@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% load bootstrap3 %}
+
+{% block head_title %}Account{% endblock %}
+
+{% block content %}
+  <div class="account account-settings"></div>
+    <div class="row">
+      <div class="col-md-5">
+        <form method="POST" action="{% url "account:account_settings" %}">
+          <legend>Account</legend>
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <button class="btn btn-primary" type="submit">Save</button>
+        </form>
+      </div>
+    </div>
+{% endblock %}
