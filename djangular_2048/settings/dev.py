@@ -52,8 +52,6 @@ SITE_ID = 2
 #### Setup Email server
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'investnotice@gmail.com'
-EMAIL_HOST_PASSWORD = 'investnotice123'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'admin@djangular-2048.com'
