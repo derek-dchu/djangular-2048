@@ -1,0 +1,42 @@
+body {
+  color: #0099cc;
+  background-color: rgba(0, 153, 204, 0.97); }
+
+.content-container {
+  position: relative;
+  padding-top: 100px;
+  height: 100%;
+  text-align: center; }
+
+.absolute-center {
+  max-width: 430px;
+  height: 40%;
+  margin: 0 auto 20px auto; }
+
+.panel h3 {
+  margin-top: 50px;
+  font-weight: 200; }
+.panel label {
+  display: none; }
+.panel form {
+  padding: 40px; }
+
+.social-port {
+  padding: 0 40px 40px 40px; }
+  .social-port .btn {
+    max-width: 200px;
+    min-width: 150px; }
+    .social-port .btn:first-child {
+      float: left; }
+    .social-port .btn:last-child {
+      float: right; }
+
+.panel-footer a {
+  text-decoration: none; }
+  .panel-footer a > span {
+    text-decoration: underline; }
+
+.content-container > a {
+  color: #ffffff; }
+
+/*# sourceMappingURL=login.css.map */
