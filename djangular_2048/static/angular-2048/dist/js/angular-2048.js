@@ -1,5 +1,136 @@
 'use strict';
 
+var app = angular.module('2048App', ['Game', 'Grid', 'Keyboard', 'templates']);
+
+// Game Controller
+app.controller('GameController', ['GameManager', 'KeyboardManager', function(GameManager, KeyboardManager) {
+  this.gameManager = GameManager;
+
+  this.newGame = function() {
+    KeyboardManager.init();
+    this.gameManager.newGame();
+    this.startGame();
+  };
+
+  // Start game by binding key event to the game
+  this.startGame = function() {
+    var self = this;
+    KeyboardManager.on(function(key) {
+      self.gameManager.move(key);
+    });
+  };
+
+  this.newGame();
+}]);
+'use strict';
+
+angular.module('Game', ['Grid', 'ngCookies'])
+
+.service('GameManager', ['$q', 'GridManager', '$cookieStore', function($q, GridManager, $cookieStore) {
+
+    this.grid = GridManager.grid;
+    this.tiles = GridManager.tiles;
+    this.winningValue = 2048;
+
+    // initialize service
+    this.reinit = function() {
+        this.currentScore = 0;
+        this.bestScore = this.getBestScore();
+        this.win = false;
+        this.gameOver = false;
+    };
+
+    // Create a new game
+    this.newGame = function() {
+        GridManager.generateEmptyGameBoard();
+        GridManager.initGameBoard();
+        this.reinit();
+    };
+
+    // Handle user action
+    this.move = function(key) {
+        var self = this;
+        var loop = function() {
+            // If the game is over, user can't move
+            if (self.gameOver) { return false; }
+            var coordinates = GridManager.coordinatesInDirection(key);
+            var isValidMove = false;
+
+            // Update Grid
+            GridManager.prepareTiles();
+
+            coordinates.x.forEach(function(x) {
+                coordinates.y.forEach(function(y) {
+                    // For each cell
+                    var originalCoordinate = {x: x, y: y};
+                    var tile = GridManager.getCellAt(originalCoordinate);
+
+                    if (tile) {
+                        var cell = GridManager.nextAvailableCellInDirection(tile.coordinate, key),
+                            nextTile = cell.nextTile;
+
+                        // Find the next tile can be merged
+                        if(nextTile && nextTile.value === tile.value && !nextTile.merged) {
+                            // Perform merge
+                            var newValue = tile.value * 2;
+                            var mergedTile = GridManager.newTile(tile.coordinate, newValue);
+                            mergedTile.merged = true;
+
+                            // Remove current tile
+                            GridManager.removeTile(tile);
+                            // Insert new tile on top of current tile
+                            GridManager.insertTile(mergedTile);
+                            // Move merged tile and remove destination tile
+                            GridManager.moveTile(mergedTile, nextTile.coordinate);
+
+                            self.updateScore(self.currentScore + newValue);
+                            if (newValue >= self.winningValue) {
+                                this.win = true;
+                            }
+                            isValidMove = true;
+                        } else if (!GridManager.areSameCoordinates(originalCoordinate, cell.nextCoordinate)) {
+                            // Cant merge but there is available cell
+                            GridManager.moveTile(tile, cell.nextCoordinate);
+                            isValidMove = true;
+                        }
+                    }
+                });
+            });
+
+            if (isValidMove) {
+                // Insert new tiles for next round
+                GridManager.randomlyInsertTile();
+
+                // If user won the game or there is no available move, game over
+                if (self.win || !self.moveAvailable()) {
+                    self.gameOver = true;
+                }
+            }
+        };
+        return $q.when(loop());
+    };
+
+    // Update the score
+    this.updateScore = function(newScore) {
+        this.currentScore = newScore;
+        if (this.currentScore > this.bestScore) {
+            this.bestScore = this.currentScore;
+            $cookieStore.put('bestScore', this.currentScore);
+        }
+    };
+
+    // Check is there any move left
+    this.moveAvailable = function() {
+        return GridManager.isAnyCellAvailable() || GridManager.isTileMatchesAvailable();
+    };
+
+    // Get best score
+    this.getBestScore = function() {
+        return parseInt($cookieStore.get('bestScore')) || 0;
+    };
+}]);
+'use strict';
+
 angular.module('Grid', [])
 .factory('TileModel', function() {
     var id = 16; // skip index
@@ -117,7 +248,7 @@ angular.module('Grid', [])
             return {
                 nextCoordinate: previous,
                 nextTile: this.getCellAt(coordinate)
-            }
+            };
         };
 
         // Check to see there is a cell available at a given coordinate
@@ -200,11 +331,9 @@ angular.module('Grid', [])
 
         // Move a tile to new coordinate
         this.moveTile = function(tile, newCoordinate) {
-            if (this.isWithinGrid(newCoordinate)) {
-                this.setCellAt(tile.coordinate, null);
-                this.setCellAt(newCoordinate, tile);
-                tile.updateCoordinate(newCoordinate);
-            }
+            this.setCellAt(tile.coordinate, null);
+            this.setCellAt(newCoordinate, tile);
+            tile.updateCoordinate(newCoordinate);
         };
 
         // Convert position into actual coordinate
@@ -222,11 +351,80 @@ angular.module('Grid', [])
 
         // Check whether a given coordinate is outside the grid
         this.isWithinGrid = function(coordinate) {
-            return coordinate.x >= 0 && coordinate.x < this.size && coordinate.y >= 0 && coordinate.y < this.size
+            return coordinate.x >= 0 && coordinate.x < this.size && coordinate.y >= 0 && coordinate.y < this.size;
         };
 
         // Check if two coordinates are the same
         this.areSameCoordinates = function(a, b) {
             return a.x === b.x ? a.y === b.y : false;
-        }
+        };
     }]);
+'use strict';
+
+angular.module('Grid')
+.directive('grid', function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                ngModel: '='
+            },
+            templateUrl: 'gridId.html'
+        };
+    });
+'use strict';
+
+angular.module('Grid')
+.directive('tile', function() {
+        return {
+            restrict: 'A',
+            require: 'ngModel',
+            scope: {
+                ngModel: '='
+            },
+            templateUrl: 'tileId.html'
+        };
+    });
+'use strict';
+
+angular.module('Keyboard', [])
+
+.service('KeyboardManager', ['$document', function($document) {
+
+    var keyboardMap = {
+        37: 'left',
+        38: 'up',
+        39: 'right',
+        40: 'down'
+    };
+
+    // Initialize the keyboard event binding
+    this.init =function() {
+        var self = this;
+        this.keyEventHandlers = [];
+        $document.bind('keydown', function(e) {
+            var key = keyboardMap[e.which];
+
+            if (key) {
+                e.preventDefault();
+                self._handleKeyEvent(key, e);
+            }
+        });
+    };
+
+    // Handle key event by calling callbacks
+    this._handleKeyEvent = function(key, e) {
+        var callbacks = this.keyEventHandlers;
+        if (callbacks) {
+            for (var i = 0; i < callbacks.length; i++) {
+                var cb = callbacks[i];
+                cb(key ,e);
+            }
+        }
+    };
+
+    // Bind event handlers to get called when an event is fired
+    this.on = function(cb) {
+        this.keyEventHandlers.push(cb);
+    };
+}]);
